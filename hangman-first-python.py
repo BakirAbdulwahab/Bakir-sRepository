@@ -1,105 +1,330 @@
 import random
 
-print("Welcome to our Hangman Game!")
-print("----------------------------")
+logo = '''
+ _                                             
+| |                                            
+| |__   __ _ _ __   __ _ _ __ ___   __ _ _ __  
+| '_ \ / _` | '_ \ / _` | '_ ` _ \ / _` | '_ \ 
+| | | | (_| | | | | (_| | | | | | | (_| | | | |
+|_| |_|\__,_|_| |_|\__, |_| |_| |_|\__,_|_| |_|
+                    __/ |                      
+                   |___/                    
+'''
 
-wordBank = ["update", "strike", "clerk", "accompany", "exploit", "banana", "sailor", "pan", "conception", "polite", "thought", "stimulation", "gradual", "straight", "discount", "regard", "deny", "retire", "carbon", "relinquish"]
+stages = ['''
+    +---+
+    |   |
+    O   |
+   /|\  |
+   / \  |
+        |
+==========
+''','''
+    +---+
+    |   |
+    O   |
+   /|\  |
+   /    |
+        |
+==========
+''','''
+    +---+
+    |   |
+    O   |
+   /|\  |
+        |
+        |
+==========
+''','''
+    +---+
+    |   |
+    O   |
+   /|   |
+        |
+        |
+==========
+''','''
+    +---+
+    |   |
+    O   |
+    |   |
+        |
+        |
+==========
+''','''
+    +---+
+    |   |
+    O   |
+        |
+        |
+        |
+==========
+''','''
+    +---+
+    |   |
+        |
+        |
+        |
+        |
+==========
+''']
 
-randomWord = random.choice(wordBank)
+word_list = [
+'abruptly', 
+'absurd', 
+'abyss', 
+'affix', 
+'askew', 
+'avenue', 
+'awkward', 
+'axiom', 
+'azure', 
+'bagpipes', 
+'bandwagon', 
+'banjo', 
+'bayou', 
+'beekeeper', 
+'bikini', 
+'blitz', 
+'blizzard', 
+'boggle', 
+'bookworm', 
+'boxcar', 
+'boxful', 
+'buckaroo', 
+'buffalo', 
+'buffoon', 
+'buxom', 
+'buzzard', 
+'buzzing', 
+'buzzwords', 
+'caliph', 
+'cobweb', 
+'cockiness', 
+'croquet', 
+'crypt', 
+'curacao', 
+'cycle', 
+'daiquiri', 
+'dirndl', 
+'disavow', 
+'dizzying', 
+'duplex', 
+'dwarves', 
+'embezzle', 
+'equip', 
+'espionage', 
+'euouae', 
+'exodus', 
+'faking', 
+'fishhook', 
+'fixable', 
+'fjord', 
+'flapjack', 
+'flopping', 
+'fluffiness', 
+'flyby', 
+'foxglove', 
+'frazzled', 
+'frizzled', 
+'fuchsia', 
+'funny', 
+'gabby', 
+'galaxy', 
+'galvanize', 
+'gazebo', 
+'giaour', 
+'gizmo', 
+'glowworm', 
+'glyph', 
+'gnarly', 
+'gnostic', 
+'gossip', 
+'grogginess', 
+'haiku', 
+'haphazard', 
+'hyphen', 
+'iatrogenic', 
+'icebox', 
+'injury', 
+'ivory', 
+'ivy', 
+'jackpot', 
+'jaundice', 
+'jawbreaker', 
+'jaywalk', 
+'jazziest', 
+'jazzy', 
+'jelly', 
+'jigsaw', 
+'jinx', 
+'jiujitsu', 
+'jockey', 
+'jogging', 
+'joking', 
+'jovial', 
+'joyful', 
+'juicy', 
+'jukebox', 
+'jumbo', 
+'kayak', 
+'kazoo', 
+'keyhole', 
+'khaki', 
+'kilobyte', 
+'kiosk', 
+'kitsch', 
+'kiwifruit', 
+'klutz', 
+'knapsack', 
+'larynx', 
+'lengths', 
+'lucky', 
+'luxury', 
+'lymph', 
+'marquis', 
+'matrix', 
+'megahertz', 
+'microwave', 
+'mnemonic', 
+'mystify', 
+'naphtha', 
+'nightclub', 
+'nowadays', 
+'numbskull', 
+'nymph', 
+'onyx', 
+'ovary', 
+'oxidize', 
+'oxygen', 
+'pajama', 
+'peekaboo', 
+'phlegm', 
+'pixel', 
+'pizazz', 
+'pneumonia', 
+'polka', 
+'pshaw', 
+'psyche', 
+'puppy', 
+'puzzling', 
+'quartz', 
+'queue', 
+'quips', 
+'quixotic', 
+'quiz', 
+'quizzes', 
+'quorum', 
+'razzmatazz', 
+'rhubarb', 
+'rhythm', 
+'rickshaw', 
+'schnapps', 
+'scratch', 
+'shiv', 
+'snazzy', 
+'sphinx', 
+'spritz', 
+'squawk', 
+'staff', 
+'strength', 
+'strengths', 
+'stretch', 
+'stronghold', 
+'stymied', 
+'subway', 
+'swivel', 
+'syndrome', 
+'thriftless', 
+'thumbscrew', 
+'topaz', 
+'transcript', 
+'transgress', 
+'transplant', 
+'triphthong', 
+'twelfth', 
+'twelfths', 
+'unknown', 
+'unworthy', 
+'unzip', 
+'uptown', 
+'vaporize', 
+'vixen', 
+'vodka', 
+'voodoo', 
+'vortex', 
+'voyeurism', 
+'walkway', 
+'waltz', 
+'wave', 
+'wavy', 
+'waxy', 
+'wellspring', 
+'wheezy', 
+'whiskey', 
+'whizzing', 
+'whomever', 
+'wimpy', 
+'witchcraft', 
+'wizard', 
+'woozy', 
+'wristwatch', 
+'wyvern', 
+'xylophone', 
+'yachtsman', 
+'yippee', 
+'yoked', 
+'youthful', 
+'yummy', 
+'zephyr', 
+'zigzag', 
+'zigzagging', 
+'zilch', 
+'zipper', 
+'zodiac', 
+'zombie', 
+]
 
-for x in randomWord:
-    print("_", end = " ")
+chosen_word = random.choice(word_list)
+word_length = len(chosen_word)
 
+# To import data from other files, use these ways!
+# from example_file import variable
+# print(variable)
 
-def printHangman(wrong):
-    if(wrong == 0):
-        print("\n+--+")
-        print("    |")
-        print("    |")
-        print("    |")
-        print("   ===")
-    elif(wrong == 1):
-        print("\n+--+")
-        print(" 0  |")
-        print("    |")
-        print("    |")
-        print("   ===")
-    elif(wrong == 2):
-        print("\n+--+")
-        print(" 0  |")
-        print(" |  |")
-        print("    |")
-        print("   ===")
-    elif(wrong == 3):
-        print("\n+--+")
-        print(" 0  |")
-        print(" |\ |")
-        print("    |")
-        print("   ===")
-    elif(wrong == 4):
-        print("\n+--+")
-        print(" 0  |")
-        print("/|\ |")
-        print("    |")
-        print("   ===")
-    elif(wrong == 5):
-        print("\n+--+")
-        print(" 0  |")
-        print("/|\ |")
-        print("  \ |")
-        print("   ===")
-    elif(wrong == 6):
-        print("\n+--+")
-        print(" 0  |")
-        print("/|\ |")
-        print("/ \ |")
-        print("   ===")
+display = []
 
+for underscore in chosen_word:
+    display += "_"
 
+result = False
+lives = 6
 
+while not result:
+    guess = input("Guess a letter: ").lower()
 
-def printWord(guessedLetters):
-    letterCounter = 0
-    correctLettersCounter = 0
-    for char in randomWord:
-        if(char in guessedLetters):
-            print(randomWord[letterCounter], end = " ")
-            correctLettersCounter+=1
-        else:
-            print(" ", end = " ")
-        letterCounter+=1
-    return correctLettersCounter
+    if guess in display:
+        print(f"You've already guessed {guess}.")
 
-def printLines():
-    print("\r")
-    for char in randomWord:
-        print("\u203E", end = " ")
+    for position in range(word_length):
+        letter = chosen_word[position]
+        if letter == guess:
+            display[position] = letter
 
+        if letter == chosen_word:
+            print("Letter Already Chosen.")
 
-lengthOfRandomWord = len(randomWord)
-wrongLetterChosen = 0
-currentGuessIndex = 0
-currentLettersGuessed = []
-lettersCorrect = 0
+    if guess not in chosen_word:
+        print(f"You guessed {guess}, that's not in the word. You lose a life!")
+        lives -= 1
+        if lives == 0:
+            result = True
+            print("You Lose!")
 
-while (wrongLetterChosen != 6 and lettersCorrect != lengthOfRandomWord):
-    print("\nLetters you have guessed: ")
-    for letter in currentLettersGuessed:
-        print(letter, end = " ")
-    
-    letterGuessed = input("\nPlease guess a letter: ")
-    
-    if (randomWord[currentGuessIndex] == letterGuessed):
-        printHangman(wrongLetterChosen)
-        currentGuessIndex+=1
-        currentLettersGuessed.append(letterGuessed)
-        lettersCorrect = printWord(currentLettersGuessed)
-        printLines()
-    else:
-        wrongLetterChosen+=1
-        currentLettersGuessed.append(letterGuessed)
-        printHangman(wrongLetterChosen)
-        lettersCorrect = printWord(currentLettersGuessed)
-        printLines()
+    print(display)
 
-print("\nGame Over! Thank you for playing!")
+    if "_" not in display:
+        result = True
+        print("You Win!")
+
+    print(stages[lives])
